@@ -1,6 +1,4 @@
 import express from 'express';
-import fs from 'fs';
-import path from 'path';
 import cors from 'cors';
 import { SignJWT, jwtVerify } from 'jose';
 import { config } from 'dotenv';
@@ -12,58 +10,7 @@ app.use(express.json());
 config();
 const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
-const dbPath = path.resolve('db.json');
-
-function readDB() {
-    return JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
-}
-function writeDB(data) {
-    fs.writeFileSync(dbPath, JSON.stringify(data, null, 2));
-}
-
 // Routes
-app.get('/api/auditions', (req, res) => {
-    const db = readDB();
-    res.json(db.auditions || []);
-});
-
-app.get('/api/announcements', (req, res) => {
-    const db = readDB();
-    res.json(db.announcements || []);
-});
-
-app.get('/api/members', (req, res) => {
-    const db = readDB();
-    res.json(db.members || []);
-});
-
-app.get('/api/paymentTest', (req, res) => {
-    const db = readDB();
-    res.json(db.paymentTest || []);
-});
-
-app.post('/api/members', (req, res) => {
-    const { text } = req.body;
-
-    const db = readDB();
-    const newMember = { id: Date.now(), text };
-    db.members.push(newMember);
-    writeDB(db);
-
-    res.status(201).json(newMember);
-});
-
-app.post('/api/paymentTest', (req, res) => {
-    const { text } = req.body;
-    //add validations
-
-    const db = readDB();
-    const newPayment = { id: Date.now(), text };
-    //db.paymentTest.push(newPayment);
-    //writeDB(db);
-
-    res.status(201).json(newPayment);
-});
 
 app.post('/api/payment', async (req, res) => {
     const data = req.body;
@@ -122,15 +69,6 @@ async function getPaymentStatus(tokenRequestPayload) {
         console.error('Error in payment flow:', err)
     }
 }
-
-
-
-
-
-
-
-
-
 
 async function generateJWT(data) {
     const jwt = await new SignJWT(data)
