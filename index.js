@@ -14,10 +14,7 @@ const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 app.post('/api/payment', async (req, res) => {
     const data = req.body;
-    const locale = 'en';
-    if(data.locale == "mm") {
-        locale = "my";
-    }
+    const locale = data.locale == 'mm' ? 'my' : 'en';
     const tokenRequestPayload = {
         "merchantID": "JT04",
         "invoiceNo": generateInvoiceNumber(),
