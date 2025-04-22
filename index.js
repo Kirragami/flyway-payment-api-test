@@ -20,7 +20,7 @@ app.post('/api/payment', async (req, res) => {
         "invoiceNo": generateInvoiceNumber(),
         "description": data.description,
         "amount": data.amount || '',
-        "currencyCode": "MMK",
+        "currencyCode": "THB",
         "paymentChannel": data.paymentMethod || '',
         "frontendReturnUrl": data.frontendReturnUrl,
         "backendReturnUrl": 'https://music-app-api-test.vercel.app/api/paymentTest',
