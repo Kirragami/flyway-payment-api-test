@@ -14,10 +14,6 @@ const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
 app.post('/api/payment', async (req, res) => {
     const data = req.body;
-    let locale = 'mm';
-    // if(data.locale == 'mm') {
-    //     locale = 'my'
-    // }
 
     const tokenRequestPayload = {
         "merchantID": "JT04",
@@ -28,7 +24,7 @@ app.post('/api/payment', async (req, res) => {
         "paymentChannel": data.paymentMethod || '',
         "frontendReturnUrl": data.frontendReturnUrl,
         "backendReturnUrl": 'https://music-app-api-test.vercel.app/api/paymentTest',
-        "locale": locale
+        "locale": data.locale
     }
     
     res.status(200).json(await getPaymentToken(tokenRequestPayload));
